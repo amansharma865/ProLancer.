@@ -1,0 +1,23 @@
+.pay {
+    width: 600px;
+    min-height: calc(100vh - 300px); // Ensure minimum height
+    margin: 40px auto 100px; // Add bottom margin
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h2 {
+        margin: 20px 0 40px 0;
+    }
+
+    form {
+        margin-bottom: 50px; // Add space after form
+    }
+
+    @media screen and (max-width: 900px) {
+        width: 90%;
+        min-height: calc(100vh - 250px);
+        margin: 30px auto 80px;
+    }
+}

@@ -1,0 +1,183 @@
+.messages-page {  // Changed from .messages to be more specific
+    min-height: 80vh;
+    background: linear-gradient(135deg, #f6f3ff, #ffffff);
+    padding: 20px;
+
+    .messages-container {  // Changed from .container
+        width: 85%;
+        margin: 20px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(147, 112, 219, 0.1);
+        animation: messagesSlideUp 0.5s ease;
+
+        .messages-title {  // Changed from .title
+            margin-bottom: 30px;
+            
+            h1 {
+                font-size: 2.2rem;
+                color: #4a148c;
+                position: relative;
+                display: inline-block;
+                animation: messagesTitleSlide 0.6s ease;
+                
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: -12px;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background: linear-gradient(90deg, #9370db, #673ab7);
+                    border-radius: 2px;
+                    animation: messagesLineExpand 0.8s ease-out forwards;
+                }
+            }
+        }
+
+        .messages-table {  // Changed from table
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+
+            tr {
+                transition: all 0.3s ease;
+                animation: messagesRowFade 0.5s ease backwards;
+                
+                th {
+                    text-align: left;
+                    padding: 15px;
+                    color: #4a148c;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    border-bottom: 2px solid #e6e1fc;
+                }
+
+                td {
+                    padding: 20px 15px;
+                    background: #fcfaff;
+                    transition: all 0.3s ease;
+                    
+                    &:first-child {
+                        border-radius: 12px 0 0 12px;
+                        font-weight: 500;
+                        color: #4a148c;
+                    }
+                    
+                    &:last-child {
+                        border-radius: 0 12px 12px 0;
+                    }
+
+                    .messages-link {  // Changed from .link
+                        color: #666;
+                        text-decoration: none;
+                        transition: color 0.3s ease;
+                        display: block;
+                        padding: 5px 0;
+                        
+                        &:hover {
+                            color: #9370db;
+                        }
+                    }
+                }
+
+                .messages-action-btn {  // Changed from button
+                    padding: 8px 16px;
+                    background: linear-gradient(135deg, #9370db, #673ab7);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 15px rgba(147, 112, 219, 0.2);
+                    }
+                }
+
+                &.active {
+                    td {
+                        background: #f3e5f5;
+                        position: relative;
+                        
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            height: 100%;
+                            // width: 4px;
+                            background: #9370db;
+                            border-radius: 4px 0 0 4px;
+                        }
+                    }
+                }
+
+                &:hover td {
+                    transform: scale(1.01);
+                    background: #f8f5ff;
+                }
+
+                // Add animation delay to rows
+                @for $i from 1 through 10 {
+                    &:nth-child(#{$i}) {
+                        animation-delay: #{$i * 0.1}s;
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 900px) {
+            width: 95%;
+            padding: 20px;
+            
+            .messages-table {
+                th, td {
+                    padding: 12px 10px;
+                }
+            }
+        }
+    }
+}
+
+// Unique keyframes for Messages page
+@keyframes messagesSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes messagesTitleSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes messagesLineExpand {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes messagesRowFade {
+    from { 
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
