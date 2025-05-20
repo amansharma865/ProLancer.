@@ -7,8 +7,11 @@ import toast from 'react-hot-toast';
 import './Reviews.scss';
 import { motion } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../atoms';
 
 const Reviews = ({ gigID }) => {
+    const user = useRecoilValue(userState);
     const navigation = useNavigate();
     const queryClient = useQueryClient();
     const { isLoading, error, data, refetch } = useQuery({
@@ -44,6 +47,11 @@ const Reviews = ({ gigID }) => {
     const handleReviewSubmit = (event) => {
         event.preventDefault();
 
+        if (user?.isSeller) {
+            toast.error("Sellers can't create reviews!");
+            return;
+        }
+
         const description = event.target[0].value;
         const star = event.target[1].value;
         
@@ -77,6 +85,7 @@ const Reviews = ({ gigID }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
+                style={{ display: user?.isSeller ? 'none' : 'block' }}
             >
                 <form 
                     className='addForm' 

@@ -12,3 +12,4 @@ export { default as Register } from './Auth/Register/Register';
 export { default as Pay } from './Pay/Pay';
 export { default as Success } from './Success/Success';
 export { default as NotFound } from './NotFound/NotFound';
+export { default as Profile } from './Profile/Profile';

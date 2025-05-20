@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { axiosFetch, getCountryFlag } from '../../utils';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Loader, NextArrow, PrevArrow, Reviews } from '../../components';
 import './Gig.scss';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../atoms';
 
 import { CarouselProvider, Slider, Slide, ImageWithZoom, ButtonBack, ButtonNext, Image } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
@@ -15,6 +17,8 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept'
 
 const Gig = () => {
   const { _id } = useParams();
+  const user = useRecoilValue(userState);
+  const navigate = useNavigate();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const { isLoading, error, data } = useQuery({
@@ -40,6 +44,15 @@ const Gig = () => {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 }
+  };
+
+  const handlePaymentClick = (e) => {
+    e.preventDefault();
+    if (user?.isSeller) {
+      toast.error("Sellers can't purchase gigs!");
+      return;
+    }
+    navigate(`/pay/${_id}`);
   };
 
   return (
@@ -259,15 +272,14 @@ const Gig = () => {
                 ))}
               </motion.div>
               
-              <Link to={`/pay/${_id}`}>
-                <motion.button
-                  className="action-button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Continue to Payment
-                </motion.button>
-              </Link>
+              <motion.button
+                className="action-button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handlePaymentClick}
+              >
+                Continue to Payment
+              </motion.button>
             </motion.div>
           </motion.div>
         </div>

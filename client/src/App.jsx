@@ -17,6 +17,8 @@ import {
   Pay,
   Success, 
   NotFound,
+Profile
+  
 } from "./pages";
 import "./App.scss";
 
@@ -33,7 +35,15 @@ const paths = [
         <Orders />
       </PrivateRoute>
     ),
+  },{
+    path: "/profile",
+    element: (
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    ),
   },
+  
   {
     path: "/organize",
     element: (

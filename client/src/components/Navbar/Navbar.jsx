@@ -249,6 +249,9 @@ const Navbar = () => {
                     <Link className="link" to="/messages">
                       Messages
                     </Link>
+                    <Link className="link" to="/profile">
+                      Profile
+                    </Link>
                     <Link className="link" to="/" onClick={handleLogout}>
                       Logout
                     </Link>
