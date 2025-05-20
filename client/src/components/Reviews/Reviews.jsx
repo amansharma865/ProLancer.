@@ -64,11 +64,11 @@ const Reviews = ({ gigID }) => {
                 <h2>Customer Reviews</h2>
                 <div className="rating-summary">
                     <span className="total-reviews">{data?.length || 0} Reviews</span>
-                    <div className="stars">
+                    {/* <div className="stars">
                         {[...Array(5)].map((_, i) => (
                             <FaStar key={i} size={16} />
                         ))}
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

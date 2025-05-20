@@ -84,6 +84,7 @@
                 align-items: center;
                 gap: 15px;
                 color: #1e293b;
+                position: relative; // Add this
 
                 .sortBy {
                     color: #64748b;
@@ -109,23 +110,25 @@
                     position: absolute;
                     top: 100%;
                     right: 0;
-                    margin-top: 8px;
+                    z-index: 10;
+                    padding: 8px 0;
+                    margin-top: 4px;
                     background: white;
-                    border: 1px solid #e2e8f0;
                     border-radius: 8px;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                    overflow: hidden;
+                    border: 1px solid #e5e7eb;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    min-width: 120px;
 
                     span {
                         display: block;
-                        padding: 12px 20px;
-                        color: #1e293b;
+                        padding: 8px 16px;
                         cursor: pointer;
-                        transition: all 0.2s ease;
+                        color: #4b5563;
+                        transition: all 0.2s;
 
                         &:hover {
-                            background: #f8fafc;
-                            color: var(--primary-color);
+                            background: #f3f4f6;
+                            color: #111827;
                         }
                     }
                 }
@@ -137,6 +140,17 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 25px;
             padding: 20px 0;
+
+            .no-gigs {
+                width: 100%;
+                text-align: center;
+                color: #6b7280;
+                font-size: 1.1rem;
+                padding: 40px 20px;
+                background: #f9fafb;
+                border-radius: 8px;
+                border: 1px dashed #e5e7eb;
+            }
         }
     }
 

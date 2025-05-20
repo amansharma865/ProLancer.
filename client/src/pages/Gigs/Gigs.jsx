@@ -48,7 +48,7 @@ const Gigs = () => {
   return (
     <div className='gigs'>
       <div className="container">
-        <span className="breadcrumbs">Home {'>'} {category}</span>
+        <span className="breadcrumbs">Home {' - '} {category}</span>
         <h1>{category || 'Search Results'}</h1>
         <p>Find the perfect services for your business</p>
         <div className="menu">
@@ -57,7 +57,7 @@ const Gigs = () => {
             <input ref={maxRef} type="number" placeholder='Max price' />
             <button onClick={handlePriceFilter}>Apply</button>
           </div>
-          <div className="right">
+          {/* <div className="right">
             <span className='sortBy'>Sort by:</span>
             <div className='sortType' onClick={() => setOpenMenu(!openMenu)}>
               {sortBy === 'sales' ? 'Best Selling' : 'Newest'}
@@ -71,13 +71,13 @@ const Gigs = () => {
                 }
               </div>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="cards">
           {isLoading 
             ? <div className='loader'><Loader size={45} /></div>
             : error 
-              ? <div>Something went wrong!</div>
+              ? <div>No gigs available </div>
               : data?.map((gig) => <GigCard key={gig._id} data={gig} />)
           }
         </div>

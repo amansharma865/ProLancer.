@@ -175,10 +175,10 @@ const Gig = () => {
                     )}
                   </div>
                   <div className="stats-grid">
-                    <div className="stat-item">
+                    {/* <div className="stat-item">
                       <div className="value">{data?.userID?.completedOrders || 0}</div>
                       <div className="label">Projects</div>
-                    </div>
+                    </div> */}
                     <div className="stat-item">
                       <div className="value">
                         {MONTHS[new Date(data?.userID.createdAt).getMonth()] + ' ' + 

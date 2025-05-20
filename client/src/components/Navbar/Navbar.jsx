@@ -121,6 +121,74 @@ const Navbar = () => {
     }
   };
 
+  const handleFeatureClick = (e) => {
+    e.preventDefault();
+    if (pathname !== '/') {
+      navigate('/?scrollTo=features');
+    } else {
+      const element = document.getElementById('features-section');
+      const headerOffset = 100; // pixels to offset from the top
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleTestimonialsClick = (e) => {
+    e.preventDefault();
+    if (pathname !== '/') {
+      navigate('/?scrollTo=testimonials');
+    } else {
+      const element = document.getElementById('testimonials-section');
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleWhyUsClick = (e) => {
+    e.preventDefault();
+    if (pathname !== '/') {
+      navigate('/?scrollTo=whyus');
+    } else {
+      const element = document.getElementById('why-choose-us-section'); // Update this ID
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleCategoriesClick = (e) => {
+    e.preventDefault();
+    if (pathname !== '/') {
+      navigate('/?scrollTo=categories');
+    } else {
+      const element = document.getElementById('categories-section');
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <nav className={showMenu || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
@@ -133,11 +201,10 @@ const Navbar = () => {
 
         <div className="links">
           <div className="menu-links">
-            <span>For Enterprise</span>
-            <span>Features</span>
-            <span>Contact Us</span>
-            {!user?.isSeller && <span>Become a Seller</span>}
-            {user?.isSeller && <span>Add a new gig</span>}
+            <span onClick={handleCategoriesClick} style={{cursor: 'pointer'}}>Categories</span>
+            <span onClick={handleFeatureClick} style={{cursor: 'pointer'}}>Features</span>
+            <span onClick={handleTestimonialsClick} style={{cursor: 'pointer'}}>Testimonials</span>
+            <span onClick={handleWhyUsClick} style={{cursor: 'pointer'}}>Why Us</span>
           </div>
           {isLoading ? (
             <Loader size={35} />

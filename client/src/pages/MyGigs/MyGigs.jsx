@@ -211,9 +211,9 @@ const MyGigs = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <img src={gig.cover} alt={gig.title} />
-                    <span className="status">
+                    {/* <span className="status">
                       {gig.sales} Orders
-                    </span>
+                    </span> */}
                   </motion.div>
                   <motion.div 
                     className="content"
@@ -232,10 +232,10 @@ const MyGigs = () => {
                         </div>
                         <div className="label">Base Price</div>
                       </div>
-                      <div className="stat">
+                      {/* <div className="stat">
                         <div className="value">{gig.sales}</div>
                         <div className="label">Sales</div>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="actions">
                       <motion.button

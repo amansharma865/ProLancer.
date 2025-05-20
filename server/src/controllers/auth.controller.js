@@ -85,11 +85,6 @@ const authRegister = async (request, response) => {
     }
 };
 
-module.exports = {
-    authRegister,
-    // other exports...
-};
-
 const authLogin = async (request, response) => {
     const { username, password } = request.body;
 
@@ -167,9 +162,26 @@ const authStatus = async (request, response) => {
     }
 }
 
+const verifyUser = async (request, response) => {
+    try {
+        const user = await User.findById(request.userID).select('-password');
+        return response.status(200).send({
+            error: false,
+            user
+        });
+    }
+    catch (err) {
+        return response.status(401).send({
+            error: true,
+            message: "Not authenticated!"
+        });
+    }
+}
+
 module.exports = {
     authLogin,
     authLogout,
     authRegister,
-    authStatus
+    authStatus,
+    verifyUser
 }

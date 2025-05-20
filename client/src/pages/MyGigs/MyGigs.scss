@@ -198,26 +198,35 @@
 
         .content {
           padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally centers child elements */
+  justify-content: center; /* Vertically centers child elements */
+ 
 
           h3 {
             font-size: 1.2rem;
             color: #2d3748;
             margin-bottom: 15px;
             line-height: 1.4;
+            
           }
 
           .stats {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(1, 1fr);
             gap: 20px;
             padding: 15px 0;
             border-top: 1px solid #e2e8f0;
+
+
 
             .stat {
               text-align: center;
               padding: 10px;
               border-radius: 12px;
               background: #f8fafc;
+
 
               .value {
                 font-size: 1.5rem;

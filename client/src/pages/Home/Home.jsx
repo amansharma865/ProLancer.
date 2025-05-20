@@ -5,6 +5,7 @@ import { CategoryCard, ProjectCard } from '../../components';
 import { cards, projects } from '../../data';
 import { testimonials } from '../../data/testimonials';
 import './Home.scss';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
   const { scrollYProgress } = useScroll();
@@ -12,10 +13,35 @@ const Home = () => {
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const backgroundOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.5]);
   const backgroundShift = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const { search } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, []);
+    window.scrollTo(0, 0);
+    const validScrolls = ['features', 'categories', 'testimonials', 'whyus'];
+    const scrollTo = search.split('=')[1];
+    
+    if (validScrolls.includes(scrollTo)) {
+      setTimeout(() => {
+        let sectionId;
+        switch(scrollTo) {
+          case 'features': sectionId = 'features-section'; break;
+          case 'categories': sectionId = 'categories-section'; break;
+          case 'testimonials': sectionId = 'testimonials-section'; break;
+          case 'whyus': sectionId = 'why-choose-us'; break;
+        }
+        
+        const element = document.getElementById(sectionId);
+        const headerOffset = 100;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }, 500);
+    }
+  }, [search]);
 
   const stats = [
     { number: "5M+", label: "Active Freelancers" },
@@ -275,6 +301,7 @@ const Home = () => {
         </motion.div>
 
         <motion.div
+          id="categories-section"  // Add this id
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -288,6 +315,7 @@ const Home = () => {
         </motion.div>
 
         <motion.div 
+          id="features-section"
           className="features dark"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -336,6 +364,7 @@ const Home = () => {
         </motion.div>
 
         <motion.div 
+          id="testimonials-section"
           className="testimonials-section"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -403,6 +432,7 @@ const Home = () => {
         </motion.div>
 
         <motion.div 
+          id="why-choose-us-section"  // Add this id
           className="why-choose-us"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -435,7 +465,7 @@ const Home = () => {
               whileInView="visible"
             >
               {whyChooseUsFeatures.map((feature, index) => (
-                <motion.div
+                <motion.div 
                   key={index}
                   className="feature"
                   variants={cardVariants}
@@ -454,7 +484,6 @@ const Home = () => {
             </motion.div>
           </div>
         </motion.div>
-
         <motion.div
           className="projects-section"
           initial={{ opacity: 0 }}
