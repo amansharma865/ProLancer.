@@ -1,6 +1,9 @@
-const paymentIntent = async (request, response) => {
-    const { _id } = request.params;
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const { Order, Gig } = require('../models');
+const { CustomException } = require('../utils');
 
+// Get all orders for the current user
+const getOrders = async (request, response) => {
     try {
         // Check if user is authenticated
         if (!request.userID) {
@@ -10,19 +13,39 @@ const paymentIntent = async (request, response) => {
             });
         }
 
+        // Build query to find orders where user is either seller or buyer
+        const query = { 
+            $and: [
+                { $or: [{ sellerID: request.userID }, { buyerID: request.userID }] },
+                { isCompleted: true }
+            ] 
+        };
+        
+        // Get orders with populated user data
+        const orders = await Order.find(query)
+            .populate(request.isSeller ? 'buyerID' : 'sellerID', 'username email image country')
+            .sort({ createdAt: -1 });
+
+        return response.status(200).send(orders);
+    }
+    catch (error) {
+        console.error('Error fetching orders:', error);
+        return response.status(500).send({
+            error: true,
+            message: error.message || 'Error fetching orders'
+        });
+    }
+};
+
+const paymentIntent = async (request, response) => {
+    const { _id } = request.params;
+
+    try {
         const gig = await Gig.findOne({ _id });
         if (!gig) {
             return response.status(404).send({
                 error: true,
                 message: 'Gig not found'
-            });
-        }
-
-        // Prevent sellers from buying their own gigs
-        if (gig.userID.toString() === request.userID.toString()) {
-            return response.status(400).send({
-                error: true,
-                message: 'You cannot purchase your own gig!'
             });
         }
 
@@ -74,8 +97,36 @@ const paymentIntent = async (request, response) => {
     }
 };
 
+const updatePaymentStatus = async (request, response) => {
+    const { payment_intent } = request.body;
+
+    try {
+        const order = await Order.findOneAndUpdate({ payment_intent }, {
+            $set: {
+                isCompleted: true
+            }
+        }, { new: true });
+
+        if (order?.isCompleted) {
+            return response.status(202).send({
+                error: false,
+                message: 'Order has been confirmed!'
+            });
+        }
+
+        throw CustomException('Payment status not updated!', 500);
+    }
+    catch ({ message, status = 500 }) {
+        return response.status(status).send({
+            error: true,
+            message
+        });
+    }
+};
+
 module.exports = {
     getOrders,
     paymentIntent,
     updatePaymentStatus
 };
+
