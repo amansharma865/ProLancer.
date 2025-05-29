@@ -1,29 +1,28 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET);
-const { Order, Gig } = require('../models');
-const { CustomException } = require('../utils');
-
-const getOrders = async (request, response) => {
-    try {
-        const orders = await Order.find({ $and: [{ $or: [{ sellerID: request.userID }, { buyerID: request.userID }] }, { isCompleted: true }] }).populate(request.isSeller ? 'buyerID' : 'sellerID', 'username email image country');
-        return response.send(orders);
-    }
-    catch ({ message, status = 500 }) {
-        return response.send({
-            error: true,
-            message
-        });
-    }
-};
-
 const paymentIntent = async (request, response) => {
     const { _id } = request.params;
 
     try {
+        // Check if user is authenticated
+        if (!request.userID) {
+            return response.status(401).send({
+                error: true,
+                message: 'You are not authenticated!'
+            });
+        }
+
         const gig = await Gig.findOne({ _id });
         if (!gig) {
             return response.status(404).send({
                 error: true,
                 message: 'Gig not found'
+            });
+        }
+
+        // Prevent sellers from buying their own gigs
+        if (gig.userID.toString() === request.userID.toString()) {
+            return response.status(400).send({
+                error: true,
+                message: 'You cannot purchase your own gig!'
             });
         }
 
@@ -71,33 +70,6 @@ const paymentIntent = async (request, response) => {
         return response.status(500).send({
             error: true,
             message: error.message || 'Internal server error'
-        });
-    }
-};
-
-const updatePaymentStatus = async (request, response) => {
-    const { payment_intent } = request.body;
-
-    try {
-        const order = await Order.findOneAndUpdate({ payment_intent }, {
-            $set: {
-                isCompleted: true
-            }
-        }, { new: true });
-
-        if (order?.isCompleted) {
-            return response.status(202).send({
-                error: false,
-                message: 'Order has been confirmed!'
-            });
-        }
-
-        throw CustomException('Payment status not updated!', 500);
-    }
-    catch ({ message, status = 500 }) {
-        return response.status(status).send({
-            error: true,
-            message
         });
     }
 };
