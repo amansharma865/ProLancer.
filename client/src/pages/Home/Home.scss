@@ -62,12 +62,12 @@
       transition: all 0.3s ease;
 
       &:hover {
-        transform: translateY(-5px) scale(1.05);
-        box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
+        // transform: translateY(-5px) scale(1.05);
+        // box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
 
         h3 {
           color: var(--accent-color);
-          transform: scale(1.1);
+          transform: scale(1.05);
         }
       }
 
