@@ -1,37 +1,31 @@
 const jwt = require('jsonwebtoken');
 const { CustomException } = require('../utils');
+const { authLogout } = require('../controllers/auth.controller');
 
 const userMiddleware = (request, response, next) => {
     const token = request.cookies.accessToken;
     
     try {
         if(!token) {
-            return response.status(401).send({
-                error: true,
-                message: 'You are not authenticated!'
-            });
+            throw CustomException('Unauthorized access!', 400);
         }
         
-        jwt.verify(token, process.env.JWT_SECRET, (err, verification) => {
-            if (err) {
-                return response.status(403).send({
-                    error: true,
-                    message: 'Token is not valid!'
-                });
-            }
-            
+        const verification = jwt.verify(token, process.env.JWT_SECRET);
+        if(verification) {
             request.userID = verification._id;
             request.isSeller = verification.isSeller;
             
-            next();
-        });
+            return next();
+        }
+        
+        authLogout(request, response);
+        throw CustomException('Relogin', 400);
     }
-    catch(error) {
-        console.error("Authentication error:", error);
-        return response.status(500).send({
+    catch({message, status = 500}) {
+        return response.status(status).send({
             error: true,
-            message: 'Authentication error'
-        });
+            message
+        })
     }
 }
 
